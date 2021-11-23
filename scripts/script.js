@@ -1,22 +1,24 @@
 const main = async () => {
   const [owner, randomPerson] = await hre.ethers.getSigners();
-  const contractFactory = await hre.ethers.getContractFactory('MorningPortal');
+  const contractFactory = await hre.ethers.getContractFactory(
+    'IndulgencePortal'
+  );
   const contract = await contractFactory.deploy();
   await contract.deployed();
 
   console.log('Contract deployed at address: ' + contract.address);
   console.log('Contract deployed by: ' + owner.address);
 
-  let sendMessageTx = await contract.sendMorningMessage(
-    'Defending my diploma today, wish me luck'
+  let sendMessageTx = await contract.indulgeTheSin(
+    `I've stole money from my parents`
   );
   sendMessageTx.wait();
   
   sendMessageTx = await contract
     .connect(randomPerson)
-    .sendMorningMessage('Going for job interview today');
+    .indulgeTheSin('Pushed granma');
   sendMessageTx.wait();
-  await contract.getAllMorningMessages();
+  await contract.getAllSins();
 };
 
 const runMain = async () => {

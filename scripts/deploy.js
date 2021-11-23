@@ -3,7 +3,7 @@ const main = async () => {
   const accountBalance = await deployer.getBalance();
   console.log('Contract deployed by:', deployer.address);
   console.log('Deployer has balance of:', accountBalance.toString());
-  const Token = await hre.ethers.getContractFactory('MorningPortal');
+  const Token = await hre.ethers.getContractFactory('IndulgencePortal');
   const portal = await Token.deploy();
   await portal.deployed();
 
