@@ -7,6 +7,7 @@ contract IndulgencePortal {
     uint256 _totalSins;
     mapping(uint256 => address) public siners;
     mapping(address => string) public sins;
+    mapping(string => uint256) public sinsTimestamps;
 
     constructor() {
         console.log('Come brother, tell us your sins');
@@ -16,21 +17,28 @@ contract IndulgencePortal {
     function indulgeTheSin(string memory sin) public {
         siners[_totalSins] = msg.sender;
         sins[msg.sender] = sin;
+        sinsTimestamps[sin] = block.timestamp;
         _totalSins++;
     }
 
     function getAllSins()
         public
         view
-        returns (address[] memory users, string[] memory messages)
+        returns (
+            address[] memory users,
+            string[] memory messages,
+            uint256[] memory timestamps
+        )
     {
         address[] memory allSinners = new address[](_totalSins);
         string[] memory allMessages = new string[](_totalSins);
+        uint256[] memory allTimeStamps = new uint256[](_totalSins);
         for (uint256 i = 0; i < _totalSins; i++) {
             console.log('%s from :%s', sins[siners[i]], siners[i]);
             allSinners[i] = siners[i];
             allMessages[i] = sins[siners[i]];
+            allTimeStamps[i] = sinsTimestamps[sins[siners[i]]];
         }
-        return (allSinners, allMessages);
+        return (allSinners, allMessages, allTimeStamps);
     }
 }
