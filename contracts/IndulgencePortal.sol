@@ -19,12 +19,18 @@ contract IndulgencePortal {
         _totalSins++;
     }
 
-    function getAllSins() public view returns (string[] memory) {
+    function getAllSins()
+        public
+        view
+        returns (address[] memory users, string[] memory messages)
+    {
+        address[] memory allSinners = new address[](_totalSins);
         string[] memory allMessages = new string[](_totalSins);
         for (uint256 i = 0; i < _totalSins; i++) {
             console.log('%s from :%s', sins[siners[i]], siners[i]);
+            allSinners[i] = siners[i];
             allMessages[i] = sins[siners[i]];
         }
-        return allMessages;
+        return (allSinners, allMessages);
     }
 }
