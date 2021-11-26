@@ -9,17 +9,22 @@ const main = async () => {
   console.log('Contract deployed at address: ' + contract.address);
   console.log('Contract deployed by: ' + owner.address);
 
-  let sendMessageTx = await contract.indulgeTheSin(
+  let sendMessageTx = await contract.confess(
     "I've stole money from my parents"
   );
   sendMessageTx.wait();
 
-  sendMessageTx = await contract.indulgeTheSin('Pushed granma');
+  sendMessageTx = await contract.confess('Pushed granma');
   sendMessageTx.wait();
 
   sendMessageTx = await contract
     .connect(randomPerson)
-    .indulgeTheSin('Littered');
+    .confess('Littered');
+  sendMessageTx.wait();
+
+  sendMessageTx = await contract
+    .connect(randomPerson)
+    .confess('');
   sendMessageTx.wait();
   contracts = await contract.getAllSins();
   console.log(contracts);

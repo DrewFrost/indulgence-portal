@@ -14,7 +14,8 @@ contract IndulgencePortal {
         _totalSins = 0;
     }
 
-    function indulgeTheSin(string memory sin) public {
+    function confess(string memory sin) public {
+        require(bytes(sin).length>0, "You should enter your sin for confession");
         sins[_totalSins] = sin;
         sinners[_totalSins] = msg.sender;
         timestamps[_totalSins] = block.timestamp;
