@@ -25,7 +25,7 @@ contract IndulgencePortal {
             'You should enter your sin for confession'
         );
         require(
-            lastSinConfessed[msg.sender] + 15 minutes < block.timestamp,
+            lastSinConfessed[msg.sender] + 13 minutes < block.timestamp,
             'Wait 13m'
         );
         lastSinConfessed[msg.sender] = block.timestamp;
