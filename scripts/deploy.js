@@ -4,7 +4,9 @@ const main = async () => {
   console.log('Contract deployed by:', deployer.address);
   console.log('Deployer has balance of:', accountBalance.toString());
   const Token = await hre.ethers.getContractFactory('IndulgencePortal');
-  const portal = await Token.deploy();
+  const portal = await Token.deploy({
+    value: hre.ethers.utils.parseEther('0.05'),
+  });
   await portal.deployed();
 
   console.log('Indulgence portal address:', portal.address);
