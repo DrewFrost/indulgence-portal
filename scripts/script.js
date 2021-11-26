@@ -3,7 +3,9 @@ const main = async () => {
   const contractFactory = await hre.ethers.getContractFactory(
     'IndulgencePortal'
   );
-  const contract = await contractFactory.deploy();
+  const contract = await contractFactory.deploy({
+    value: hre.ethers.utils.parseEther('0.001'),
+  });
   await contract.deployed();
 
   console.log('Contract deployed at address: ' + contract.address);
@@ -17,15 +19,11 @@ const main = async () => {
   sendMessageTx = await contract.confess('Pushed granma');
   sendMessageTx.wait();
 
-  sendMessageTx = await contract
-    .connect(randomPerson)
-    .confess('Littered');
+  sendMessageTx = await contract.connect(randomPerson).confess('Littered');
   sendMessageTx.wait();
 
   contracts = await contract.getAllSins();
-  console.log(contracts);
   contracts = await contract.getTotalSins();
-  console.log(contracts);
 };
 
 const runMain = async () => {

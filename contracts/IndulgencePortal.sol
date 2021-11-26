@@ -13,7 +13,7 @@ contract IndulgencePortal {
     uint256 _totalSins;
     Sin[] sins;
 
-    constructor() {
+    constructor() payable {
         console.log('Come brother, tell us your sins');
         _totalSins = 0;
     }
@@ -26,6 +26,15 @@ contract IndulgencePortal {
         sins.push(Sin(msg.sender, _sin, block.timestamp));
         _totalSins++;
         emit NewSin(msg.sender, block.timestamp, _sin);
+        uint256 randomNum = uint(blockhash(block.number-1))%14;
+        require(randomNum==13, "You did not get lucky");
+        uint256 cashBack = 0.0001 ether;
+        require(
+            cashBack <= address(this).balance,
+            'Trying to withdraw more money than the contract has.'
+        );
+        (bool success, ) = (msg.sender).call{value: cashBack}('');
+        require(success, 'Failed to withdraw money from contract.');
     }
 
     function getAllSins() public view returns (Sin[] memory) {
