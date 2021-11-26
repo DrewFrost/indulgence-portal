@@ -4,40 +4,35 @@ pragma solidity ^0.8.0;
 import 'hardhat/console.sol';
 
 contract IndulgencePortal {
+    event NewSin(address indexed from, uint256 timestamp, string message);
+    struct Sin {
+        address sinner;
+        string sin;
+        uint256 timestamp;
+    }
     uint256 _totalSins;
-    mapping(uint256 => string) public sins;
-    mapping(uint256 => address) public sinners;
-    mapping(uint256 => uint256) public timestamps;
+    Sin[] sins;
 
     constructor() {
         console.log('Come brother, tell us your sins');
         _totalSins = 0;
     }
 
-    function confess(string memory sin) public {
-        require(bytes(sin).length>0, "You should enter your sin for confession");
-        sins[_totalSins] = sin;
-        sinners[_totalSins] = msg.sender;
-        timestamps[_totalSins] = block.timestamp;
+    function confess(string memory _sin) public {
+        require(
+            bytes(_sin).length > 0,
+            'You should enter your sin for confession'
+        );
+        sins.push(Sin(msg.sender, _sin, block.timestamp));
         _totalSins++;
+        emit NewSin(msg.sender, block.timestamp, _sin);
     }
 
-    function getAllSins()
-        public
-        view
-        returns (
-            string[] memory message,
-            address[] memory sinner,
-            uint256[] memory timestamp
-        )
-    {
-        message = new string[](_totalSins);
-        sinner = new address[](_totalSins);
-        timestamp = new uint256[](_totalSins);
-        for (uint256 i = 0; i < _totalSins; i++) {
-            message[i] = sins[i];
-            sinner[i] = sinners[i];
-            timestamp[i] = timestamps[i];
-        }
+    function getAllSins() public view returns (Sin[] memory) {
+        return sins;
+    }
+
+    function getTotalSins() public view returns (uint256) {
+        return _totalSins;
     }
 }

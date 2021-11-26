@@ -22,11 +22,9 @@ const main = async () => {
     .confess('Littered');
   sendMessageTx.wait();
 
-  sendMessageTx = await contract
-    .connect(randomPerson)
-    .confess('');
-  sendMessageTx.wait();
   contracts = await contract.getAllSins();
+  console.log(contracts);
+  contracts = await contract.getTotalSins();
   console.log(contracts);
 };
 
