@@ -5,9 +5,9 @@ import 'hardhat/console.sol';
 
 contract IndulgencePortal {
     uint256 _totalSins;
-    mapping(uint256 => address) public sinners;
-    mapping(address => string) public sins;
-    mapping(string => uint256) public sinsTimestamps;
+    mapping(uint256 => string) public sins;
+    mapping(string => address) public sinners;
+    mapping(string => uint256) public timestamps;
 
     constructor() {
         console.log('Come brother, tell us your sins');
@@ -15,9 +15,9 @@ contract IndulgencePortal {
     }
 
     function indulgeTheSin(string memory sin) public {
-        sinners[_totalSins] = msg.sender;
-        sins[msg.sender] = sin;
-        sinsTimestamps[sin] = block.timestamp;
+        sins[_totalSins] = sin;
+        sinners[sin] = msg.sender;
+        timestamps[sin] = block.timestamp;
         _totalSins++;
     }
 
@@ -25,20 +25,18 @@ contract IndulgencePortal {
         public
         view
         returns (
-            address[] memory sinner,
             string[] memory message,
+            address[] memory sinner,
             uint256[] memory timestamp
         )
     {
-        sinner = new address[](_totalSins);
         message = new string[](_totalSins);
+        sinner = new address[](_totalSins);
         timestamp = new uint256[](_totalSins);
         for (uint256 i = 0; i < _totalSins; i++) {
-            console.log('%s from :%s', sins[sinners[i]], sinners[i]);
-            sinner[i] = sinners[i];
-            message[i] = sins[sinners[i]];
-            timestamp[i] = sinsTimestamps[sins[sinners[i]]];
+            message[i] = sins[i];
+            sinner[i] = sinners[sins[i]];
+            timestamp[i] = timestamps[sins[i]];
         }
-        return (sinner, message, timestamp);
     }
 }

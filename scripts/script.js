@@ -10,15 +10,19 @@ const main = async () => {
   console.log('Contract deployed by: ' + owner.address);
 
   let sendMessageTx = await contract.indulgeTheSin(
-    `I've stole money from my parents`
+    "I've stole money from my parents"
   );
   sendMessageTx.wait();
-  
+
+  sendMessageTx = await contract.indulgeTheSin('Pushed granma');
+  sendMessageTx.wait();
+
   sendMessageTx = await contract
     .connect(randomPerson)
-    .indulgeTheSin('Pushed granma');
+    .indulgeTheSin('Littered');
   sendMessageTx.wait();
-  await contract.getAllSins();
+  contracts = await contract.getAllSins();
+  console.log(contracts);
 };
 
 const runMain = async () => {
